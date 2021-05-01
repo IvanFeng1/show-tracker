@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import {Link, NavLink } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,6 +18,10 @@ const useStyles = makeStyles((theme) => ({
   title: {
     flexGrow: 1,
   },
+  link : {
+    color: "#FFF",
+    textDecoration: "none"
+  }
 }));
 
 export default function ButtonAppBar() {
@@ -32,6 +37,9 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
+          <Button><Link className={classes.link} to="/">Home</Link> </Button>
+          <Button><Link className={classes.link} to="/browse">browse</Link> </Button>
+          <Button><Link className={classes.link} to="/profile">profile</Link> </Button>
         </Toolbar>
       </AppBar>
     </div>
