@@ -16,7 +16,6 @@ app.get('/api/browse', async (request, response) => {
     const rawResp = await fetch(url)
     const data = await rawResp.json()
     response.send(data)
-    console.log(data)
 })
 app.listen(port, () => console.log(` Server started at port ${port}`))
 
