@@ -1,22 +1,23 @@
-import React from 'react'
-
+import React,{useState, useEffect,useLayoutEffect} from 'react'
+import ShowBlock from './components/ShowBlock.js'
+import Loading from "./components/Loading.js" 
 const Browse = () => {
-
+    const [raw_data,set_data] = useState([])
     //code for fetch the trending anime for user to look at
-    const fetch_data = async () => {
-        try {
-            let response = await fetch('/api/browse')
-            let data = await response.text()
-            data = await JSON.parse(data)
-            console.log(data)
-        }
-        catch(err){
-            alert(err)
-        }
-    }
-    fetch_data()
+    useEffect(() => {
+
+        fetch('/api/browse').then(res => res.text()).then(res => JSON.parse(res)).then(res => {
+            set_data(res.data)
+        })
+    }, [])
     return (
         <div>
+            {raw_data.length > 0 ? 
+                raw_data.map((data) => (
+                    <ShowBlock data={data} />
+                )) :
+                <Loading />
+            }
         </div>
     )
 }
