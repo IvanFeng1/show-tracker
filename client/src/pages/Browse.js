@@ -13,6 +13,7 @@ import Select from '@material-ui/core/Select';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+// styling :3
 const useStyles = makeStyles((theme) => ({
     formControl: {
       margin: theme.spacing(1),
@@ -26,8 +27,14 @@ const useStyles = makeStyles((theme) => ({
 const Browse = () => {
     // styling for components
     const classes = useStyles();
+    // state variables:
+
     // state variable for array of shows to be displayed 
-    const [raw_data,set_data] = useState([])
+    const [raw_data,set_data] = useState([]) // list of animes to be displayed
+    const [season,set_season] = useState() // season of animes to be displayed 
+    const [year, set_year] = useState() // year of animes tbd
+    const [genre, set_genre] = useState() // genre [...]
+
     //code for fetch the trending anime for user to look at
     // using useeffect so the api doesnt called every few seconds 
     // because of using a state variable
@@ -36,6 +43,7 @@ const Browse = () => {
             set_data(res.data)
         })
     }, [])
+
     return (
         <div>
             <Grid>
@@ -83,9 +91,10 @@ const Browse = () => {
                                     // value={age}
                                     // onChange={handleChange}
                                 >
-                                    <MenuItem value={10}>Ten</MenuItem>
-                                    <MenuItem value={20}>Twenty</MenuItem>
-                                    <MenuItem value={30}>Thirty</MenuItem>
+                                    <MenuItem value={10}>Winter</MenuItem>
+                                    <MenuItem value={20}>Spring</MenuItem>
+                                    <MenuItem value={30}>Summer</MenuItem>
+                                    <MenuItem value={30}>Fall</MenuItem>
                                 </Select>
                         </FormControl>
                     </Grid>
