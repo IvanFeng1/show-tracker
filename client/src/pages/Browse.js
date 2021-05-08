@@ -1,6 +1,6 @@
 import React,{useState, useEffect,useLayoutEffect} from 'react'
-import ShowBlock from './components/ShowBlock.js'
-import Loading from "./components/Loading.js" 
+import ShowBlock from '../components/ShowBlock.js'
+import Loading from "../components/Loading.js" 
 
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
