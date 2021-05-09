@@ -13,6 +13,8 @@ import Select from '@material-ui/core/Select';
 
 import { makeStyles } from '@material-ui/core/styles';
 
+import { Query } from 'react-apollo';
+
 // styling :3
 const useStyles = makeStyles((theme) => ({
     formControl: {
