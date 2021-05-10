@@ -24,11 +24,6 @@ const onRedirectCallback = (appState) => {
   );
 };
 
-const domain = process.env.REACT_APP_AUTH0_DOMAIN;
-const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
-console.log(domain);
-console.log(process.env.REACT_APP_AUTH0_CLIENT_ID);
-console.log(clientId);
 // for apollo client
 const httpLink = new createHttpLink({
   uri: "https://graphql.anilist.co",
