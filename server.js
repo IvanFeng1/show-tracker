@@ -1,22 +1,12 @@
- const express = require('express')
+const express = require("express");
 
- const app = express()
+const app = express();
 
- const port = 5000
+const port = 5000;
+require("dotenv").config();
+app.listen(port, () => console.log(` Server started at port ${port}`));
 
- // code for fetchign from api 
-const fetch = require('node-fetch');
+//auth0
+const path = require("path");
 
-const base_api_url = 'https://kitsu.io/api/edge'
-
-
-// endpoint to get data for browse page
-app.get('/api/browse', async (request, response) => {
-    let url = base_api_url + '/trending/anime'
-    const rawResp = await fetch(url)
-    const data = await rawResp.json()
-    response.send(data)
-})
-app.listen(port, () => console.log(` Server started at port ${port}`))
-
-
+const { auth } = require("express-openid-connect");

@@ -1,26 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import {Auth0Provider} from '@auth0/auth0-react'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-import { ApolloProvider } from '@apollo/client';
+import { Auth0Provider } from "@auth0/auth0-react";
+import AuthorizedApolloProvider from "./AuthorizedApolloProvider.js";
 
-// auth0 
-const domain = process.env.REACT_APP_AUTH0_DOMAIN
-const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID
-const audience = process.env.AUDIENCE
+import {
+  ApolloClient,
+  ApolloProvider,
+  createHttpLink,
+  InMemoryCache,
+} from "@apollo/client";
 
-// trying to add apolloprovider and auth0provider 
-const client = new ApolloClient({
-  uri:"https://graphql.anilist.co",
-  cache: new InMemoryCache()
-});
-
-// copypasta code for redirecting afer login?
-const onRedirectCallback = appState => {
+const onRedirectCallback = (appState) => {
   window.history.replaceState(
     {},
     document.title,
@@ -30,15 +24,33 @@ const onRedirectCallback = appState => {
   );
 };
 
+const domain = process.env.REACT_APP_AUTH0_DOMAIN;
+const clientId = process.env.REACT_APP_AUTH0_CLIENT_ID;
+console.log(domain);
+console.log(process.env.REACT_APP_AUTH0_CLIENT_ID);
+console.log(clientId);
+// for apollo client
+const httpLink = new createHttpLink({
+  uri: "https://graphql.anilist.co",
+});
+
+const client = new ApolloClient({
+  link: httpLink,
+  cache: new InMemoryCache(),
+});
+
 ReactDOM.render(
-         <Auth0Provider domain={domain} 
-                clientId = {clientId}
-                redirectUri={window.location.origin} 
-                audience={audience} 
-                onRedirectCallback={onRedirectCallback}>
+  <Auth0Provider
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+    redirectUri={window.location.origin}
+    onRedirectCallback={onRedirectCallback}
+  >
+    <ApolloProvider client={client}>
       <App />
+    </ApolloProvider>
   </Auth0Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

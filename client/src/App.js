@@ -6,17 +6,7 @@ import Apollotest from "./pages/Apollotest.js";
 import Header from "./components/Header.js";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-// for apollo client
-import { ApolloClient, InMemoryCache, HttpLink } from "@apollo/client";
-import { ApolloProvider } from "@apollo/react-hooks";
-import { setContext } from "apollo-link-context";
-
 // auth0
-import { useAuth0 } from "@auth0/auth0-react";
-
-const httpLink = new HttpLink({
-  uri: "https://graphql.anilist.co",
-});
 
 function App() {
   return (
