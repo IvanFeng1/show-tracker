@@ -14,7 +14,7 @@ function App() {
       <div className="App">
         <Header />
         <Switch>
-          <Route path="/browse" component={Apollotest} />
+          <Route path="/browse" component={Browse} />
           <Route path="/profile" component={Profile} />
           <Route path="/" component={Startpage} />
         </Switch>
