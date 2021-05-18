@@ -18,10 +18,10 @@ const ShowBlock = ({ data }) => {
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia component="img" height="140" image={data.bannerImage} />
+        <CardMedia component="img" height="140" image={data.coverImage.large} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            {data.title.english}
+            {!data.title.english ? data.title.native : data.title.english}
           </Typography>
         </CardContent>
       </CardActionArea>

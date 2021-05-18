@@ -9,6 +9,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import {
   ApolloClient,
   ApolloProvider,
+  HttpLink,
   createHttpLink,
   InMemoryCache,
 } from "@apollo/client";
@@ -26,6 +27,7 @@ const onRedirectCallback = (appState) => {
 // for apollo client
 const httpLink = new createHttpLink({
   uri: "https://graphql.anilist.co",
+  method: "POST",
 });
 
 const client = new ApolloClient({
