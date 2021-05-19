@@ -7,7 +7,6 @@ const MediaSeason = {
   FALL: "FALL",
 };
 
-Object.freeze(MediaSeason);
 const MediaSource = {
   ANIME: "ANIME",
 };

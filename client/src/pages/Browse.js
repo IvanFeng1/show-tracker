@@ -32,7 +32,7 @@ import {
   Year_Season_Search,
 } from "./queries.js";
 
-import MediaSeason from "../components/Enums.js";
+import { MediaSeason } from "../components/Enums.js";
 
 // styling :3
 const useStyles = makeStyles((theme) => ({
@@ -88,7 +88,7 @@ const Browse = () => {
   }, [genre]);
 
   useEffect(async () => {
-    await year_fetch({ variables: { seasonYear: year } });
+    await year_fetch({ variables: { year: parseInt(year) } });
   }, [year]);
 
   useEffect(async () => {

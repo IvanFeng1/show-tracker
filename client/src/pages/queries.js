@@ -68,7 +68,7 @@ export const Media_Search = gql`
 export const Genre_Search = gql`
   query GenreSearch($genre: String) {
     Page(page: 1) {
-      media(genre: $genre) {
+      media(genre: $genre, sort: POPULARITY_DESC) {
         id
         title {
           english(stylised: true)
@@ -86,7 +86,7 @@ export const Genre_Search = gql`
 export const Year_Search = gql`
   query YearSearch($year: Int) {
     Page(page: 1) {
-      media(seasonYear: $year) {
+      media(seasonYear: $year, sort: POPULARITY_DESC) {
         id
         title {
           english(stylised: true)
@@ -104,7 +104,7 @@ export const Year_Search = gql`
 export const Season_Search = gql`
   query SeasonSearch($season: MediaSeason) {
     Page(page: 1) {
-      media(season: $season) {
+      media(season: $season, sort: POPULARITY_DESC) {
         id
         title {
           english(stylised: true)
