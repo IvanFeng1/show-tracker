@@ -62,6 +62,13 @@ const Browse = () => {
   const [genre_fetch, { data: genre_data }] = useLazyQuery(Genre_Search);
   const [year_fetch, { data: year_data }] = useLazyQuery(Year_Search);
   const [season_fetch, { data: season_data }] = useLazyQuery(Season_Search);
+  // gys for genre year season
+  const [gys_fetch, { data: gys_data }] = useLazyQuery(
+    Genre_Year_Season_Search
+  );
+  const [gy_fetch, { data: gy_data }] = useLazyQuery(Genre_Year_Search);
+  const [gs_fetch, { data: gs_data }] = useLazyQuery(Genre_Season_Search);
+  const [ys_fetch, { data: ys_data }] = useLazyQuery(Year_Season_Search);
   // i need to use two useeffects specifically with an await in the first useEffect
   // because using state variables inside useEffect doesnt update the
   // state variable after the fetch and using setState right after the await doesnt work
@@ -84,23 +91,149 @@ const Browse = () => {
   // checking when the filter (genre, year, season are updated)
 
   useEffect(async () => {
-    await genre_fetch({ variables: { genre: genre } });
+    if (genre) {
+      if (year && season) {
+        // all 3 filters
+        if (gys_data) {
+          // case that data was already fetched before no need to call anilist again
+          set_data(gys_data.Page.media);
+        } else {
+          // data hasnt been fetched
+          await gys_fetch({
+            variables: {
+              genre: genre,
+              year: year,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else if (year && !season) {
+        // genre and year filter only
+        if (gy_data) {
+          // case gy_data was already fetched
+          set_data(gy_data.Page.media);
+        } else {
+          await gy_fetch({
+            variables: {
+              genre: genre,
+              year: year,
+            },
+          });
+        }
+      } else if (!year && season) {
+        // genre and season filter only
+        if (gs_data) {
+          // case gs_data was already fetched
+          set_data(gs_data.Page.media);
+        } else {
+          await gs_fetch({
+            variables: {
+              genre: genre,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else {
+        // only genre filter
+        await genre_fetch({ variables: { genre: genre } });
+      }
+    }
   }, [genre]);
 
   useEffect(async () => {
-    await year_fetch({ variables: { year: parseInt(year) } });
+    if (year) {
+      if (genre && season) {
+        if (gys_data) {
+          // case that data was already fetched before no need to call anilist again
+          set_data(gys_data.Page.media);
+        } else {
+          // data hasnt been fetched
+          await gys_fetch({
+            variables: {
+              genre: genre,
+              year: year,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else if (genre && !season) {
+        // year and genre filter only
+        if (gy_data) {
+          // case data was already fetched
+          set_data(gy_data.Page.media);
+        } else {
+          await gy_fetch({
+            variables: {
+              genre: genre,
+              year: year,
+            },
+          });
+        }
+      } else if (!genre && season) {
+        // year and season only
+        if (ys_data) {
+          // case data was already fetched
+          set_data(ys_data.Page.media);
+        } else {
+          await ys_fetch({
+            variables: {
+              year: year,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else {
+        // case that only year filter was applied
+        await year_fetch({ variables: { year: year } });
+      }
+    }
   }, [year]);
 
   useEffect(async () => {
     if (season) {
-      if (season.localeCompare("Winter") == 0) {
-        await season_fetch({ variables: { season: MediaSeason.WINTER } });
-      } else if (season.localeCompare("Spring") == 0) {
-        await season_fetch({ variables: { season: MediaSeason.SPRING } });
-      } else if (season.localeCompare("Summer") == 0) {
-        await season_fetch({ variables: { season: MediaSeason.SUMMER } });
-      } else if (season.localeCompare("Fall") == 0) {
-        await season_fetch({ variables: { season: MediaSeason.FALL } });
+      if (genre && year) {
+        if (gys_data) {
+          // case that data was already fetched before no need to call anilist again
+          set_data(gys_data.Page.media);
+        } else {
+          // data hasnt been fetched
+          await gys_fetch({
+            variables: {
+              genre: genre,
+              year: year,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else if (genre && !year) {
+        // season and genre only
+        if (gs_data) {
+          // case data was already fetched
+          set_data(gs_data.Page.media);
+        } else {
+          await gs_fetch({
+            variables: {
+              genre: genre,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else if (!genre && year) {
+        // seaosn and yearj
+        if (ys_data) {
+          // data was already fetched
+          set_data(ys_data.Page.media);
+        } else {
+          await ys_fetch({
+            variables: {
+              year: year,
+              season: MediaSeason[season],
+            },
+          });
+        }
+      } else {
+        // only season filter
+        await season_fetch({ variables: { season: MediaSeason[season] } });
       }
     }
   }, [season]);
@@ -123,6 +256,30 @@ const Browse = () => {
       set_data(season_data.Page.media);
     }
   }, [season_data]);
+
+  useEffect(() => {
+    if (gys_data) {
+      set_data(gys_data.Page.media);
+    }
+  }, [gys_data]);
+
+  useEffect(() => {
+    if (gy_data) {
+      set_data(gy_data.Page.media);
+    }
+  }, [gy_data]);
+
+  useEffect(() => {
+    if (gs_data) {
+      set_data(gs_data.Page.media);
+    }
+  }, [gs_data]);
+
+  useEffect(() => {
+    if (ys_data) {
+      set_data(ys_data.Page.media);
+    }
+  }, [ys_data]);
   return (
     <div>
       <Grid>
@@ -224,20 +381,23 @@ const Browse = () => {
                   set_season(event.target.value);
                 }}
               >
-                <MenuItem value={"Winter"}>Winter</MenuItem>
-                <MenuItem value={"Spring"}>Spring</MenuItem>
-                <MenuItem value={"Summer"}>Summer</MenuItem>
-                <MenuItem value={"Fall"}>Fall</MenuItem>
+                <MenuItem value={"WINTER"}>Winter</MenuItem>
+                <MenuItem value={"SPRING"}>Spring</MenuItem>
+                <MenuItem value={"SUMMER"}>Summer</MenuItem>
+                <MenuItem value={"FALL"}>Fall</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item>
             <Button
-              onClick={async () => {
-                await genre_fetch();
+              onClick={() => {
+                set_genre(null);
+                set_year(null);
+                set_season(null);
+                set_data(trending_data.Page.media);
               }}
             >
-              joe
+              Clear filters
             </Button>
           </Grid>
         </Grid>

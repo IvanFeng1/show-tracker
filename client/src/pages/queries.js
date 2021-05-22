@@ -68,7 +68,7 @@ export const Media_Search = gql`
 export const Genre_Search = gql`
   query GenreSearch($genre: String) {
     Page(page: 1) {
-      media(genre: $genre, sort: POPULARITY_DESC) {
+      media(genre: $genre, sort: POPULARITY_DESC, isAdult: false) {
         id
         title {
           english(stylised: true)
@@ -86,7 +86,7 @@ export const Genre_Search = gql`
 export const Year_Search = gql`
   query YearSearch($year: Int) {
     Page(page: 1) {
-      media(seasonYear: $year, sort: POPULARITY_DESC) {
+      media(seasonYear: $year, sort: POPULARITY_DESC, isAdult: false) {
         id
         title {
           english(stylised: true)
@@ -104,7 +104,7 @@ export const Year_Search = gql`
 export const Season_Search = gql`
   query SeasonSearch($season: MediaSeason) {
     Page(page: 1) {
-      media(season: $season, sort: POPULARITY_DESC) {
+      media(season: $season, sort: POPULARITY_DESC, isAdult: false) {
         id
         title {
           english(stylised: true)
@@ -120,25 +120,27 @@ export const Season_Search = gql`
 `;
 
 export const Genre_Year_Season_Search = gql`
-  query {
+  query GenreYearSeasonSearch(
+    $genre: String
+    $year: Int
+    $season: MediaSeason
+  ) {
     Page(page: 1) {
-      media(genre: $genre, seasonYear: $year, season: $season) {
+      media(
+        genre: $genre
+        seasonYear: $year
+        season: $season
+        sort: POPULARITY_DESC
+        isAdult: false
+      ) {
         id
         title {
           english(stylised: true)
           native(stylised: true)
         }
         description(asHtml: false)
-        bannerImage
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
+        coverImage {
+          large
         }
       }
     }
@@ -146,25 +148,17 @@ export const Genre_Year_Season_Search = gql`
 `;
 
 export const Genre_Year_Search = gql`
-  query {
+  query GenreYearSearch($genre: String, $year: Int) {
     Page(page: 1) {
-      media(genre: $genre, seasonYear: $year) {
+      media(genre: $genre, seasonYear: $year, isAdult: false) {
         id
         title {
           english(stylised: true)
           native(stylised: true)
         }
         description(asHtml: false)
-        bannerImage
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
+        coverImage {
+          large
         }
       }
     }
@@ -172,25 +166,22 @@ export const Genre_Year_Search = gql`
 `;
 
 export const Genre_Season_Search = gql`
-  query {
+  query GenreSeason($genre: String, $season: MediaSeason) {
     Page(page: 1) {
-      media(genre: $genre, season: $season) {
+      media(
+        genre: $genre
+        season: $season
+        sort: POPULARITY_DESC
+        isAdult: false
+      ) {
         id
         title {
           english(stylised: true)
           native(stylised: true)
         }
         description(asHtml: false)
-        bannerImage
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
+        coverImage {
+          large
         }
       }
     }
@@ -198,25 +189,17 @@ export const Genre_Season_Search = gql`
 `;
 
 export const Year_Season_Search = gql`
-  query {
+  query YearSeasonSearch($year: Int, $season: MediaSeason) {
     Page(page: 1) {
-      media(seasonYear: $year, season: $season) {
+      media(seasonYear: $year, season: $season, isAdult: false) {
         id
         title {
           english(stylised: true)
           native(stylised: true)
         }
         description(asHtml: false)
-        bannerImage
-        startDate {
-          year
-          month
-          day
-        }
-        endDate {
-          year
-          month
-          day
+        coverImage {
+          large
         }
       }
     }
