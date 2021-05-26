@@ -26,7 +26,7 @@ export const Movie_Popular = gql`
 export const Anime_Trending = gql`
   query {
     Page(page: 1) {
-      media(sort: TRENDING_DESC) {
+      media(sort: TRENDING_DESC, isAdult: false) {
         id
         title {
           english(stylised: true)
