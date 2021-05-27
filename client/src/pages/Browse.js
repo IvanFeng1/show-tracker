@@ -1,24 +1,25 @@
-import React, { useState, useEffect, useLayoutEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 // components
-import ShowBlock from "../components/ShowBlock.js";
-import Loading from "../components/Loading.js";
+import ShowBlock from '../components/ShowBlock.js';
+import Loading from '../components/Loading.js';
 
 // matieral ui stuff
-import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
-import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import Button from "@material-ui/core/Button";
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from '@material-ui/core/styles';
 
 // queries styuff
-import { useQuery, useLazyQuery } from "@apollo/client";
+import { useQuery, useLazyQuery } from '@apollo/client';
 import {
   Movie_Popular,
   Anime_Trending,
@@ -30,9 +31,9 @@ import {
   Genre_Year_Search,
   Genre_Season_Search,
   Year_Season_Search,
-} from "./queries.js";
+} from './queries.js';
 
-import { MediaSeason } from "../components/Enums.js";
+import { MediaSeason } from '../components/Enums.js';
 
 // styling :3
 const useStyles = makeStyles((theme) => ({
@@ -42,6 +43,10 @@ const useStyles = makeStyles((theme) => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  gridContainer: {
+    flexGrow: 0,
+    marginLeft: 50,
   },
 }));
 
@@ -69,6 +74,7 @@ const Browse = () => {
   const [gy_fetch, { data: gy_data }] = useLazyQuery(Genre_Year_Search);
   const [gs_fetch, { data: gs_data }] = useLazyQuery(Genre_Season_Search);
   const [ys_fetch, { data: ys_data }] = useLazyQuery(Year_Season_Search);
+  const [title_fetch, { data: t_data }] = useLazyQuery(Media_Search);
   // i need to use two useeffects specifically with an await in the first useEffect
   // because using state variables inside useEffect doesnt update the
   // state variable after the fetch and using setState right after the await doesnt work
@@ -282,144 +288,145 @@ const Browse = () => {
   }, [ys_data]);
   return (
     <div>
-      <Grid>
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          alignItems="centrer"
-          justify="left"
-        >
-          <Grid item>
-            <Typography>search</Typography>
-            <TextField id="outlined-basic" variant="outlined" />
-          </Grid>
-          <Grid item>
-            <Typography>genres</Typography>
-            <FormControl className={classes.formControl}>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value=""
-                onChange={(event) => {
-                  set_genre(event.target.value);
+      <Container>
+        <Grid>
+          <Grid
+            container
+            spacing={1}
+            direction="row"
+            alignItems="centre"
+            justify="left"
+          >
+            <Grid item>
+              <Typography>search</Typography>
+              <TextField id="outlined-basic" variant="outlined" />
+            </Grid>
+            <Grid item>
+              <Typography>genres</Typography>
+              <FormControl className={classes.formControl}>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={genre ? genre : ''}
+                  onChange={(event) => {
+                    set_genre(event.target.value);
+                  }}
+                >
+                  <MenuItem value={'Action'}>Action</MenuItem>
+                  <MenuItem value={'Adventure'}>Adventure</MenuItem>
+                  <MenuItem value={'Comedy'}>Comedy</MenuItem>
+                  <MenuItem value={'Drama'}>Drama </MenuItem>
+                  <MenuItem value={'Fantasty'}>Fantasty</MenuItem>
+                  <MenuItem value={'Horror'}>Horror</MenuItem>
+                  <MenuItem value={'Mahou Shoujo'}>Mahou Shoujo</MenuItem>
+                  <MenuItem value={'Mecha'}>Mecha</MenuItem>
+                  <MenuItem value={'Music'}>Music</MenuItem>
+                  <MenuItem value={'Mystery'}>Mystery</MenuItem>
+                  <MenuItem value={'Psychological'}>Psychological</MenuItem>
+                  <MenuItem value={'Romance'}>Romance</MenuItem>
+                  <MenuItem value={'Supernatural'}>Supernatural</MenuItem>
+                  <MenuItem value={'Thriller'}>Thriller</MenuItem>
+                  <MenuItem value={'Mystery'}>Mystery</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <Typography>year</Typography>
+              <FormControl className={classes.formControl}>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={year ? year : ''}
+                  onChange={(event) => {
+                    set_year(event.target.value);
+                  }}
+                >
+                  <MenuItem value={2022}>2022</MenuItem>
+                  <MenuItem value={2021}>2021</MenuItem>
+                  <MenuItem value={2020}>2020</MenuItem>
+                  <MenuItem value={2019}>2019</MenuItem>
+                  <MenuItem value={2018}>2018</MenuItem>
+                  <MenuItem value={2017}>2017</MenuItem>
+                  <MenuItem value={2016}>2016</MenuItem>
+                  <MenuItem value={2015}>2015</MenuItem>
+                  <MenuItem value={2014}>2014</MenuItem>
+                  <MenuItem value={2013}>2013</MenuItem>
+                  <MenuItem value={2012}>2012</MenuItem>
+                  <MenuItem value={2011}>2011</MenuItem>
+                  <MenuItem value={2010}>2010</MenuItem>
+                  <MenuItem value={2009}>2009</MenuItem>
+                  <MenuItem value={2008}>2008</MenuItem>
+                  <MenuItem value={2007}>2007</MenuItem>
+                  <MenuItem value={2006}>2006</MenuItem>
+                  <MenuItem value={2005}>2005</MenuItem>
+                  <MenuItem value={2004}>2004</MenuItem>
+                  <MenuItem value={2003}>2003</MenuItem>
+                  <MenuItem value={2002}>2002</MenuItem>
+                  <MenuItem value={2001}>2001</MenuItem>
+                  <MenuItem value={2000}>2000</MenuItem>
+                  <MenuItem value={1999}>1999</MenuItem>
+                  <MenuItem value={1998}>1998</MenuItem>
+                  <MenuItem value={1997}>1997</MenuItem>
+                  <MenuItem value={1996}>1996</MenuItem>
+                  <MenuItem value={1995}>1995</MenuItem>
+                  <MenuItem value={1994}>1994</MenuItem>
+                  <MenuItem value={1993}>1993</MenuItem>
+                  <MenuItem value={1992}>1992</MenuItem>
+                  <MenuItem value={1991}>1991</MenuItem>
+                  <MenuItem value={1990}>1990</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <Typography>season</Typography>
+              <FormControl className={classes.formControl}>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={season ? season : ''}
+                  onChange={(event) => {
+                    set_season(event.target.value);
+                  }}
+                >
+                  <MenuItem value={'WINTER'}>Winter</MenuItem>
+                  <MenuItem value={'SPRING'}>Spring</MenuItem>
+                  <MenuItem value={'SUMMER'}>Summer</MenuItem>
+                  <MenuItem value={'FALL'}>Fall</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item>
+              <Button
+                onClick={() => {
+                  set_genre('');
+                  set_year('');
+                  set_season('');
+                  set_data(trending_data.Page.media);
                 }}
               >
-                <MenuItem value={"Action"}>Action</MenuItem>
-                <MenuItem value={"Adventure"}>Adventure</MenuItem>
-                <MenuItem value={"Comedy"}>Comedy</MenuItem>
-                <MenuItem value={"Drama"}>Drama </MenuItem>
-                <MenuItem value={"Fantasty"}>Fantasty</MenuItem>
-                <MenuItem value={"Horror"}>Horror</MenuItem>
-                <MenuItem value={"Mahou Shoujo"}>Mahou Shoujo</MenuItem>
-                <MenuItem value={"Mecha"}>Mecha</MenuItem>
-                <MenuItem value={"Music"}>Music</MenuItem>
-                <MenuItem value={"Mystery"}>Mystery</MenuItem>
-                <MenuItem value={"Psychological"}>Psychological</MenuItem>
-                <MenuItem value={"Romance"}>Romance</MenuItem>
-                <MenuItem value={"Supernatural"}>Supernatural</MenuItem>
-                <MenuItem value={"Thriller"}>Thriller</MenuItem>
-                <MenuItem value={"Mystery"}>Mystery</MenuItem>
-              </Select>
-            </FormControl>
+                Clear filters
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <Typography>year</Typography>
-            <FormControl className={classes.formControl}>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value=""
-                onChange={(event) => {
-                  set_year(event.target.value);
-                }}
-              >
-                <MenuItem value={2022}>2022</MenuItem>
-                <MenuItem value={2021}>2021</MenuItem>
-                <MenuItem value={2020}>2020</MenuItem>
-                <MenuItem value={2019}>2019</MenuItem>
-                <MenuItem value={2018}>2018</MenuItem>
-                <MenuItem value={2017}>2017</MenuItem>
-                <MenuItem value={2016}>2016</MenuItem>
-                <MenuItem value={2015}>2015</MenuItem>
-                <MenuItem value={2014}>2014</MenuItem>
-                <MenuItem value={2013}>2013</MenuItem>
-                <MenuItem value={2012}>2012</MenuItem>
-                <MenuItem value={2011}>2011</MenuItem>
-                <MenuItem value={2010}>2010</MenuItem>
-                <MenuItem value={2009}>2009</MenuItem>
-                <MenuItem value={2008}>2008</MenuItem>
-                <MenuItem value={2007}>2007</MenuItem>
-                <MenuItem value={2006}>2006</MenuItem>
-                <MenuItem value={2005}>2005</MenuItem>
-                <MenuItem value={2004}>2004</MenuItem>
-                <MenuItem value={2003}>2003</MenuItem>
-                <MenuItem value={2002}>2002</MenuItem>
-                <MenuItem value={2001}>2001</MenuItem>
-                <MenuItem value={2000}>2000</MenuItem>
-                <MenuItem value={1999}>1999</MenuItem>
-                <MenuItem value={1998}>1998</MenuItem>
-                <MenuItem value={1997}>1997</MenuItem>
-                <MenuItem value={1996}>1996</MenuItem>
-                <MenuItem value={1995}>1995</MenuItem>
-                <MenuItem value={1994}>1994</MenuItem>
-                <MenuItem value={1993}>1993</MenuItem>
-                <MenuItem value={1992}>1992</MenuItem>
-                <MenuItem value={1991}>1991</MenuItem>
-                <MenuItem value={1990}>1990</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <Typography>season</Typography>
-            <FormControl className={classes.formControl}>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value=""
-                onChange={(event) => {
-                  set_season(event.target.value);
-                }}
-              >
-                <MenuItem value={"WINTER"}>Winter</MenuItem>
-                <MenuItem value={"SPRING"}>Spring</MenuItem>
-                <MenuItem value={"SUMMER"}>Summer</MenuItem>
-                <MenuItem value={"FALL"}>Fall</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <Button
-              onClick={() => {
-                set_genre(null);
-                set_year(null);
-                set_season(null);
-                set_data(trending_data.Page.media);
-              }}
-            >
-              Clear filters
-            </Button>
+          <Grid
+            container
+            spacing={1}
+            direction="row"
+            className={classes.gridContainer}
+          >
+            {/*grid container for show items */}
+            {raw_data && raw_data.length > 0 ? (
+              raw_data.map((dataa) => (
+                <Grid item xs={3}>
+                  <ShowBlock data={dataa} />
+                </Grid>
+              ))
+            ) : (
+              <Loading />
+            )}
           </Grid>
         </Grid>
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          alignItems="center"
-          justify="center"
-        >
-          {/*grid container for show items */}
-          {raw_data && raw_data.length > 0 ? (
-            raw_data.map((dataa) => (
-              <Grid item>
-                <ShowBlock data={dataa} />
-              </Grid>
-            ))
-          ) : (
-            <Loading />
-          )}
-        </Grid>
-      </Grid>
+      </Container>
     </div>
   );
 };
