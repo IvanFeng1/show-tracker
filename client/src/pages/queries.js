@@ -3,7 +3,11 @@ import { gql } from '@apollo/client';
 export const Anime_Trending = gql`
   query {
     Page(page: 1) {
-      media(sort: TRENDING_DESC, isAdult: false) {
+      media(
+        format_in: [TV, TV_SHORT, MOVIE, OVA]
+        sort: TRENDING_DESC
+        isAdult: false
+      ) {
         id
         title {
           english(stylised: true)
@@ -25,9 +29,14 @@ export const Anime_Trending = gql`
 `;
 
 export const Media_Search = gql`
-  query MediaSearch($title: String!) {
+  query MediaSearch($title: String) {
     Page(page: 1) {
-      media(search: $title) {
+      media(
+        search: $title
+        format_in: [TV]
+        sort: POPULARITY_DESC
+        isAdult: false
+      ) {
         id
         title {
           english(stylised: true)
