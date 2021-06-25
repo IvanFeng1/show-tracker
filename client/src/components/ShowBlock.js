@@ -82,7 +82,7 @@ const ShowBlock = ({ data }) => {
         </div>
         <CardContent>
           <Typography gutterBottom variant="subtitle2" component="h2">
-            {!data.title.english ? data.title.native : data.title.english}
+            {data.title.english ? data.title.english : data.title.romaji}
           </Typography>
         </CardContent>
       </CardActionArea>
