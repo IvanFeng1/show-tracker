@@ -54,7 +54,7 @@ const Browse = () => {
   const [genre, set_genre] = useState(null); // genre [...]
   const [year, set_year] = useState(null); // year of animes tbd
   const [season, set_season] = useState(null); // season of animes to be displayed
-
+  const [title, set_title] = useState(null);
   // getting the data for when teh browse page mounts
   const [initial_fetch, { data: trending_data }] = useLazyQuery(Anime_Trending);
 
@@ -105,6 +105,15 @@ const Browse = () => {
     }
   }, [genre, year, season]);
 
+  useEffect(async () => {
+    if (title) {
+      title_fetch({
+        variables: {
+          title: title,
+        },
+      });
+    }
+  }, [title]);
   // checking when the filter data is fetched and then set the state variable raw_data so that the page outputs the updated data
 
   useEffect(() => {
@@ -113,6 +122,11 @@ const Browse = () => {
     }
   }, [gys_data]);
 
+  useEffect(() => {
+    if (t_data) {
+      set_data(t_data.Page.media);
+    }
+  }, [t_data]);
   return (
     <div>
       <Container>
@@ -125,8 +139,18 @@ const Browse = () => {
             justify="left"
           >
             <Grid item>
-              <Typography>search</Typography>
-              <TextField id="outlined-basic" variant="outlined" />
+              <Typography>Search</Typography>
+              <TextField
+                id="standard-search"
+                label="Search field"
+                type="search"
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    e.preventDefault();
+                    set_title(e.target.value);
+                  }
+                }}
+              />
             </Grid>
             <Grid item>
               <Typography>genres</Typography>
@@ -143,7 +167,7 @@ const Browse = () => {
                   <MenuItem value={'Adventure'}>Adventure</MenuItem>
                   <MenuItem value={'Comedy'}>Comedy</MenuItem>
                   <MenuItem value={'Drama'}>Drama </MenuItem>
-                  <MenuItem value={'Fantasty'}>Fantasty</MenuItem>
+                  <MenuItem value={'Fantasy'}>Fantasty</MenuItem>
                   <MenuItem value={'Horror'}>Horror</MenuItem>
                   <MenuItem value={'Mahou Shoujo'}>Mahou Shoujo</MenuItem>
                   <MenuItem value={'Mecha'}>Mecha</MenuItem>
@@ -228,7 +252,6 @@ const Browse = () => {
                   set_genre(null);
                   set_year(null);
                   set_season(null);
-                  console.log(trending_data.Page.media);
                   set_data(trending_data.Page.media);
                 }}
               >
