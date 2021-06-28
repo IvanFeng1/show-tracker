@@ -17,7 +17,7 @@ app.use(
 
 app.use(logger('dev'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 
 const path = require('path');
 
@@ -34,9 +34,8 @@ pool.on('error', (err, client) => {
   console.error('Error:', err);
 });
 
-// receiving body from react
-app.post('/api', (req, resp) => {
-  console.log(req.body);
+// receiving user data and the showid user chose from browse page
+app.post('/api/post', (req, resp) => {
   let req_body = req.body;
   let user_data = req_body.user.name;
   let show_id = req_body.showID;
@@ -44,10 +43,32 @@ app.post('/api', (req, resp) => {
     text: `insert into user_data_table (user_email, show_id) values ($1,$2)`,
     values: [user_data, show_id],
   };
-  let query_params = pool.query(insert_query, (err, res) => {
+  pool.query(insert_query, (err, res) => {
     if (err) {
       console.log(err.stack);
     }
   });
   resp.send('post request received from node');
+});
+
+// getting list of ids from db
+app.get('/api/get', (req, resp) => {
+  let user_email = req.query.user_email;
+  let get_query = {
+    text: 'select show_id from user_data_table where user_email = $1',
+    values: [user_email],
+  };
+  pool.query(get_query, (err, res) => {
+    if (err) {
+      console.log(err.stack);
+    }
+    if (res) {
+      let show_id_arr = [];
+      for (let row of res.rows) {
+        show_id_arr.push(row.show_id);
+      }
+
+      resp.send(show_id_arr);
+    }
+  });
 });
