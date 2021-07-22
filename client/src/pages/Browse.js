@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // components
 import ShowBlock from '../components/ShowBlock.js';
@@ -19,7 +19,7 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 
 // queries styuff
-import { useQuery, useLazyQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 import {
   Anime_Trending,
   Media_Search,
@@ -131,13 +131,7 @@ const Browse = () => {
     <div>
       <Container>
         <Grid>
-          <Grid
-            container
-            spacing={1}
-            direction="row"
-            alignItems="centre"
-            justify="left"
-          >
+          <Grid container spacing={1} direction="row" alignItems="center">
             <Grid item>
               <Typography>Search</Typography>
               <TextField
@@ -265,11 +259,10 @@ const Browse = () => {
             direction="row"
             className={classes.gridContainer}
           >
-            {/*grid container for show items */}
             {raw_data && raw_data.length > 0 ? (
               raw_data.map((dataa) => (
                 <Grid item xs={3}>
-                  <ShowBlock data={dataa} />
+                  <ShowBlock key={dataa.id} data={dataa} mode="add" />
                 </Grid>
               ))
             ) : (
