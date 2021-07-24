@@ -7,34 +7,45 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import CancelIcon from '@material-ui/icons/Cancel';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-// axios for posting
 import axios from 'axios';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
 // functino to handle passing data from showBlock to node, which then gets stored into the db
-function handleSubmitAdd(e, userData, showData) {
-  // authentication
+function handleSubmitAdd(e, userData, showID) {
   e.preventDefault();
-  // dont think i need configs?
-  // let axiosConfig = {
-  //   headers: {
-  //     'Content-Type': 'application/json;',
-  //   },
-  // };
   axios
-    .post('http://localhost:5000/api', { user: userData, show: showData })
-    .then((res) => console.log('success, dictionary sent,', res))
+    .post('http://localhost:5000/api/post/add', {
+      user: userData,
+      showID: showID,
+    })
+    .then((res) => console.log('success, sent,', res))
     .catch((err) => {
       console.log(err.response);
     });
 }
-const ShowBlock = ({ data }) => {
+
+// function to handle removingg selected show (show for current showblock) from this user in the db
+function handleSubmitRemove(e, userData, showID) {
+  e.preventDefault();
+  axios
+    .post('http://localhost:5000/api/post/remove', {
+      user: userData,
+      showID: showID,
+    })
+    .then((res) => console.log('success, sent,', res))
+    .catch((err) => {
+      console.log(err.response);
+    });
+}
+
+const ShowBlock = ({ data, mode }) => {
   const { user, isAuthenticated } = useAuth0();
-  const [showAddButton, setShowAddButt] = useState(false);
+  const [showButton, setShowButt] = useState(false);
   const useStyles = makeStyles({
     root: {
       width: 200,
@@ -56,36 +67,49 @@ const ShowBlock = ({ data }) => {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <div className={classes.mediaWrapper}>
-          <CardMedia
-            className={classes.media}
-            component="img"
-            image={data.coverImage.large}
-            onMouseEnter={() => setShowAddButt(true)}
-            onMouseLeave={() => setShowAddButt(false)}
-          ></CardMedia>
-          {showAddButton && (
-            <IconButton
-              className={classes.addIcon}
-              onMouseEnter={() => setShowAddButt(true)}
-              onMouseLeave={() => setShowAddButt(false)}
-              onClick={
-                isAuthenticated
-                  ? (event) => handleSubmitAdd(event, user, data)
-                  : () => console.log('did not submit')
-              } // if user is logged in then add the show to db, if not dont add
-            >
-              <AddCircleIcon style={{ color: 'black' }} />
-            </IconButton>
-          )}
-        </div>
-        <CardContent>
-          <Typography gutterBottom variant="subtitle2" component="h2">
-            {data.title.english ? data.title.english : data.title.romaji}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <div className={classes.mediaWrapper}>
+        <CardMedia
+          className={classes.media}
+          component="img"
+          image={data.coverImage.large}
+          onMouseEnter={() => setShowButt(true)}
+          onMouseLeave={() => setShowButt(false)}
+        ></CardMedia>
+        {showButton && mode === 'add' && (
+          <IconButton
+            className={classes.addIcon}
+            onMouseEnter={() => setShowButt(true)}
+            onMouseLeave={() => setShowButt(false)}
+            onClick={
+              isAuthenticated
+                ? (event) => handleSubmitAdd(event, user, data.id)
+                : () => console.log('did not submit')
+            }
+          >
+            <AddCircleIcon style={{ color: 'black' }} />
+          </IconButton>
+        )}
+
+        {showButton && mode === 'remove' && (
+          <IconButton
+            className={classes.addIcon}
+            onMouseEnter={() => setShowButt(true)}
+            onMouseLeave={() => setShowButt(false)}
+            onClick={
+              isAuthenticated
+                ? (event) => handleSubmitRemove(event, user, data.id)
+                : () => console.log('did not submit')
+            }
+          >
+            <CancelIcon style={{ color: 'black' }} />
+          </IconButton>
+        )}
+      </div>
+      <CardContent>
+        <Typography gutterBottom variant="subtitle2" component="h2">
+          {data.title.english ? data.title.english : data.title.romaji}
+        </Typography>
+      </CardContent>
     </Card>
   );
 };
