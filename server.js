@@ -34,23 +34,54 @@ pool.on('error', (err, client) => {
   console.error('Error:', err);
 });
 
-// receiving user data and the showid user chose from browse page
-app.post('/api/post', (req, resp) => {
+// receiving user data and the showid user chose from browse page and then adding it into the db
+app.post('/api/post/add', (req, resp) => {
   let req_body = req.body;
-  let user_data = req_body.user.name;
+  let user_email = req_body.user.name;
   let show_id = req_body.showID;
-  let insert_query = {
-    text: `insert into user_data_table (user_email, show_id) values ($1,$2)`,
-    values: [user_data, show_id],
+  let duplicate_entry = false;
+  // add a check to see if a row is already in teh db
+  let if_exists_query = {
+    text:
+      'select exists (select 1 from user_data_table where user_email = $1 and show_id = $2)',
+    values: [user_email, show_id],
   };
-  pool.query(insert_query, (err, res) => {
+
+  pool.query(if_exists_query, (err, res) => {
+    if (res && res.rows) {
+      duplicate_entry = true ? res.rows[0].exists : false;
+    }
+  });
+  if (!duplicate_entry) {
+    let insert_query = {
+      text: `insert into user_data_table (user_email, show_id) values ($1,$2)`,
+      values: [user_email, show_id],
+    };
+    pool.query(insert_query, (err, res) => {
+      if (err) {
+        console.log(err.stack);
+      }
+    });
+  }
+  resp.send('insert request received from node');
+});
+
+app.post('/api/post/remove', (req, resp) => {
+  let req_body = req.body;
+  let user_email = req_body.user.name;
+  let show_id = req_body.showID;
+
+  let remove_query = {
+    text: `remove from user_data_table where user_email = $1 and show_id = $2`,
+    values: [user_email, show_id],
+  };
+  pool.query(remove_query, (err, res) => {
     if (err) {
       console.log(err.stack);
     }
   });
-  resp.send('post request received from node');
+  resp.send('remove request received from node');
 });
-
 // getting list of ids from db
 app.get('/api/get', (req, resp) => {
   let user_email = req.query.user_email;
