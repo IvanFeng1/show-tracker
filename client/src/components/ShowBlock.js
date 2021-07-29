@@ -23,27 +23,26 @@ function handleSubmitAdd(e, userData, showID) {
       user: userData,
       showID: showID,
     })
-    .then((res) => console.log('success, sent,', res))
     .catch((err) => {
-      console.log(err.response);
+      throw err;
     });
 }
 
 // function to handle removingg selected show (show for current showblock) from this user in the db
-function handleSubmitRemove(e, userData, showID) {
+function handleSubmitRemove(e, userData, showID, hasRemoved, setHasRemoved) {
   e.preventDefault();
   axios
     .post('http://localhost:5000/api/post/remove', {
       user: userData,
       showID: showID,
     })
-    .then((res) => console.log('success, sent,', res))
     .catch((err) => {
-      console.log(err.response);
+      throw err;
     });
+  setHasRemoved(!hasRemoved);
 }
 
-const ShowBlock = ({ data, mode }) => {
+const ShowBlock = ({ data, mode, hasRemoved, setHasRemoved }) => {
   const { user, isAuthenticated } = useAuth0();
   const [showButton, setShowButt] = useState(false);
   const useStyles = makeStyles({
@@ -65,6 +64,7 @@ const ShowBlock = ({ data, mode }) => {
     },
   });
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <div className={classes.mediaWrapper}>
@@ -83,7 +83,7 @@ const ShowBlock = ({ data, mode }) => {
             onClick={
               isAuthenticated
                 ? (event) => handleSubmitAdd(event, user, data.id)
-                : () => console.log('did not submit')
+                : null
             }
           >
             <AddCircleIcon style={{ color: 'black' }} />
@@ -97,8 +97,15 @@ const ShowBlock = ({ data, mode }) => {
             onMouseLeave={() => setShowButt(false)}
             onClick={
               isAuthenticated
-                ? (event) => handleSubmitRemove(event, user, data.id)
-                : () => console.log('did not submit')
+                ? (event) =>
+                    handleSubmitRemove(
+                      event,
+                      user,
+                      data.id,
+                      hasRemoved,
+                      setHasRemoved
+                    )
+                : null
             }
           >
             <CancelIcon style={{ color: 'black' }} />
