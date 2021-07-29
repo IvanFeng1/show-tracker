@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import _ from 'lodash';
+
 // components
 import ShowBlock from '../components/ShowBlock.js';
 import Loading from '../components/Loading.js';
@@ -157,21 +159,29 @@ const Browse = () => {
                     set_genre(event.target.value);
                   }}
                 >
-                  <MenuItem value={'Action'}>Action</MenuItem>
-                  <MenuItem value={'Adventure'}>Adventure</MenuItem>
-                  <MenuItem value={'Comedy'}>Comedy</MenuItem>
-                  <MenuItem value={'Drama'}>Drama </MenuItem>
-                  <MenuItem value={'Fantasy'}>Fantasty</MenuItem>
-                  <MenuItem value={'Horror'}>Horror</MenuItem>
-                  <MenuItem value={'Mahou Shoujo'}>Mahou Shoujo</MenuItem>
-                  <MenuItem value={'Mecha'}>Mecha</MenuItem>
-                  <MenuItem value={'Music'}>Music</MenuItem>
-                  <MenuItem value={'Mystery'}>Mystery</MenuItem>
-                  <MenuItem value={'Psychological'}>Psychological</MenuItem>
-                  <MenuItem value={'Romance'}>Romance</MenuItem>
-                  <MenuItem value={'Supernatural'}>Supernatural</MenuItem>
-                  <MenuItem value={'Thriller'}>Thriller</MenuItem>
-                  <MenuItem value={'Mystery'}>Mystery</MenuItem>
+                  {_.map(
+                    [
+                      'Action',
+                      'Adventure',
+                      'Comedy',
+                      'Drama',
+                      'Fantasy',
+                      'Horror',
+                      'Mahou Shoujo',
+                      'Mecha',
+                      'Music',
+                      'Mystery',
+                      'Psychological',
+                      'Romance',
+                      'Supernatural',
+                      'Thriller',
+                    ],
+                    (category) => (
+                      <MenuItem key={category} value={category}>
+                        {category}
+                      </MenuItem>
+                    )
+                  )}
                 </Select>
               </FormControl>
             </Grid>
@@ -186,39 +196,11 @@ const Browse = () => {
                     set_year(event.target.value);
                   }}
                 >
-                  <MenuItem value={2022}>2022</MenuItem>
-                  <MenuItem value={2021}>2021</MenuItem>
-                  <MenuItem value={2020}>2020</MenuItem>
-                  <MenuItem value={2019}>2019</MenuItem>
-                  <MenuItem value={2018}>2018</MenuItem>
-                  <MenuItem value={2017}>2017</MenuItem>
-                  <MenuItem value={2016}>2016</MenuItem>
-                  <MenuItem value={2015}>2015</MenuItem>
-                  <MenuItem value={2014}>2014</MenuItem>
-                  <MenuItem value={2013}>2013</MenuItem>
-                  <MenuItem value={2012}>2012</MenuItem>
-                  <MenuItem value={2011}>2011</MenuItem>
-                  <MenuItem value={2010}>2010</MenuItem>
-                  <MenuItem value={2009}>2009</MenuItem>
-                  <MenuItem value={2008}>2008</MenuItem>
-                  <MenuItem value={2007}>2007</MenuItem>
-                  <MenuItem value={2006}>2006</MenuItem>
-                  <MenuItem value={2005}>2005</MenuItem>
-                  <MenuItem value={2004}>2004</MenuItem>
-                  <MenuItem value={2003}>2003</MenuItem>
-                  <MenuItem value={2002}>2002</MenuItem>
-                  <MenuItem value={2001}>2001</MenuItem>
-                  <MenuItem value={2000}>2000</MenuItem>
-                  <MenuItem value={1999}>1999</MenuItem>
-                  <MenuItem value={1998}>1998</MenuItem>
-                  <MenuItem value={1997}>1997</MenuItem>
-                  <MenuItem value={1996}>1996</MenuItem>
-                  <MenuItem value={1995}>1995</MenuItem>
-                  <MenuItem value={1994}>1994</MenuItem>
-                  <MenuItem value={1993}>1993</MenuItem>
-                  <MenuItem value={1992}>1992</MenuItem>
-                  <MenuItem value={1991}>1991</MenuItem>
-                  <MenuItem value={1990}>1990</MenuItem>
+                  {_.map(_.range(2022, 1989, -1), (n) => (
+                    <MenuItem key={n * 3} value={n}>
+                      {n}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -233,10 +215,18 @@ const Browse = () => {
                     set_season(event.target.value);
                   }}
                 >
-                  <MenuItem value={'WINTER'}>Winter</MenuItem>
-                  <MenuItem value={'SPRING'}>Spring</MenuItem>
-                  <MenuItem value={'SUMMER'}>Summer</MenuItem>
-                  <MenuItem value={'FALL'}>Fall</MenuItem>
+                  <MenuItem key={'WINTER'} value={'WINTER'}>
+                    Winter
+                  </MenuItem>
+                  <MenuItem key={'SPRING'} value={'SPRING'}>
+                    Spring
+                  </MenuItem>
+                  <MenuItem key={'SUMMER'} value={'SUMMER'}>
+                    Summer
+                  </MenuItem>
+                  <MenuItem key={'FALL'} value={'FALL'}>
+                    Fall
+                  </MenuItem>
                 </Select>
               </FormControl>
             </Grid>
@@ -261,8 +251,8 @@ const Browse = () => {
           >
             {raw_data && raw_data.length > 0 ? (
               raw_data.map((dataa) => (
-                <Grid item xs={3}>
-                  <ShowBlock key={dataa.id} data={dataa} mode="add" />
+                <Grid key={dataa.id} item xs={3}>
+                  <ShowBlock data={dataa} mode="add" />
                 </Grid>
               ))
             ) : (
