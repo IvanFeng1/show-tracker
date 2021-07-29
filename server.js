@@ -72,7 +72,7 @@ app.post('/api/post/remove', (req, resp) => {
   let show_id = req_body.showID;
 
   let remove_query = {
-    text: `remove from user_data_table where user_email = $1 and show_id = $2`,
+    text: `delete from user_data_table where user_email = $1 and show_id = $2`,
     values: [user_email, show_id],
   };
   pool.query(remove_query, (err, res) => {
