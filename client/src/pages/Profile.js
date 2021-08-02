@@ -3,9 +3,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 import { trackPromise, usePromiseTracker } from 'react-promise-tracker';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 import Loading from '../components/Loading';
 import ShowBlock from '../components/ShowBlock';
+
+import { makeStyles } from '@material-ui/styles';
 
 import _ from 'lodash';
 
@@ -45,6 +49,17 @@ function useLocalStorage(key, initialValue) {
   return [storedValue, setValue];
 }
 
+const useStyles = makeStyles((theme) => ({
+  gridContainer: {
+    flexGrow: 0,
+    marginLeft: 50,
+  },
+
+  main: {
+    marginTop: theme.spacing(8),
+    marginBottom: theme.spacing(2),
+  },
+}));
 const Profile = () => {
   const { user, isAuthenticated } = useAuth0();
 
@@ -56,6 +71,9 @@ const Profile = () => {
   // will do a get request from the user-showid db or local db
 
   const { promiseInProgress } = usePromiseTracker();
+
+  const classes = useStyles();
+
   useEffect(() => {
     (async () => {
       let abortController = new AbortController(); // need the aborcontrollers b/c i have two api requests in the useeffect
@@ -170,21 +188,41 @@ const Profile = () => {
   }, [hasRemoved]);
   // localStorage is used to keep data after refreshing page, can't use localStorage in render function must use state variable
   if (!isAuthenticated) {
-    return <div>please log in in homepage</div>;
+    return (
+      <Container component="main" className={classes.main} maxWidth="sm">
+        <Typography variant="h2" component="h1" gutterBottom>
+          Please log in in the homepage
+        </Typography>
+      </Container>
+    );
   } else {
     return (
       <div>
-        {showData && !_.isEmpty(showData) && _.keys(showData).length > 0
-          ? _.map(_.toArray(showData), (anime) => (
-              <ShowBlock
-                key={anime.id}
-                data={anime}
-                mode="remove"
-                hasRemoved={hasRemoved}
-                setHasRemoved={setHasRemoved}
-              />
+        <Grid
+          container
+          spacing={1}
+          direction="row"
+          classes={classes.gridContainer}
+        >
+          {showData && !_.isEmpty(showData) && _.keys(showData).length > 0 ? (
+            _.map(_.toArray(showData), (anime) => (
+              <Grid key={anime.id} item xs={3}>
+                <ShowBlock
+                  data={anime}
+                  mode="remove"
+                  hasRemoved={hasRemoved}
+                  setHasRemoved={setHasRemoved}
+                />
+              </Grid>
             ))
-          : null}
+          ) : (
+            <Container component="main" className={classes.main} maxWidth="sm">
+              <Typography variant="h2" component="h1" gutterBottom>
+                Nothing in library. Go to Browse page to add.
+              </Typography>
+            </Container>
+          )}
+        </Grid>
         {console.log(promiseInProgress)}
       </div>
     );
