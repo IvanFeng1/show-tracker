@@ -149,7 +149,7 @@ const Browse = () => {
               />
             </Grid>
             <Grid item>
-              <Typography>genres</Typography>
+              <Typography>Genres</Typography>
               <FormControl className={classes.formControl}>
                 <Select
                   labelId="demo-simple-select-label"
@@ -186,7 +186,7 @@ const Browse = () => {
               </FormControl>
             </Grid>
             <Grid item>
-              <Typography>year</Typography>
+              <Typography>Year</Typography>
               <FormControl className={classes.formControl}>
                 <Select
                   labelId="demo-simple-select-label"
@@ -205,7 +205,7 @@ const Browse = () => {
               </FormControl>
             </Grid>
             <Grid item>
-              <Typography>season</Typography>
+              <Typography>Season</Typography>
               <FormControl className={classes.formControl}>
                 <Select
                   labelId="demo-simple-select-label"
