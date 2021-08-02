@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Startpage from "./pages/Startpage.js";
-import Browse from "./pages/Browse.js";
-import Profile from "./pages/Profile.js";
-import Header from "./components/Header.js";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import Startpage from './pages/Startpage.js';
+import Browse from './pages/Browse.js';
+import Profile from './pages/Profile.js';
+import Header from './components/Header.js';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 // auth0
 
