@@ -10,7 +10,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 function App() {
   return (
     <Router>
-      <div className="App">
+      <div
+        className="App"
+        style={{ height: '100vh', backgroundColor: '#e0e0e0' }}
+      >
         <Header />
         <Switch>
           <Route path="/browse" component={Browse} />
