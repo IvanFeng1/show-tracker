@@ -12,7 +12,7 @@ function App() {
     <Router>
       <div
         className="App"
-        style={{ height: '100vh', backgroundColor: '#e0e0e0' }}
+        style={{ height: '100vh', backgroundColor: '#ffffe4' }}
       >
         <Header />
         <Switch>

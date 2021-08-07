@@ -34,11 +34,11 @@ import { MediaSeason } from '../components/Enums.js';
 // styling
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: theme.spacing(1),
+    margin: 1,
     minWidth: 120,
   },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
+  filters: {
+    marginTop: 20,
   },
   gridContainer: {
     flexGrow: 0,
@@ -130,10 +130,16 @@ const Browse = () => {
     }
   }, [t_data]);
   return (
-    <div>
+    <div style={{ backgroundColor: '#ffffe4' }}>
       <Container>
         <Grid>
-          <Grid container spacing={1} direction="row" alignItems="center">
+          <Grid
+            container
+            spacing={1}
+            direction="row"
+            alignItems="center"
+            className={classes.filters}
+          >
             <Grid item>
               <Typography>Search</Typography>
               <TextField

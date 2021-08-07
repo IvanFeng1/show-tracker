@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -49,6 +49,7 @@ const ShowBlock = ({ data, mode, hasRemoved, setHasRemoved }) => {
     root: {
       width: 200,
       height: 380,
+      backgroundColor: '#fafafa',
     },
     media: {
       width: 200,

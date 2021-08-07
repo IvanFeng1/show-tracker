@@ -7,19 +7,21 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link, NavLink } from 'react-router-dom';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
+  bar: {
+    backgroundColor: '#ffe0b2',
   },
   title: {
     flexGrow: 1,
+    color: '#000000',
   },
   link: {
-    color: '#FFF',
+    color: '#000000',
     textDecoration: 'none',
   },
 }));
@@ -29,7 +31,7 @@ export default function ButtonAppBar() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="static" className={classes.bar}>
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             app
@@ -37,17 +39,17 @@ export default function ButtonAppBar() {
           <Button>
             <Link className={classes.link} to="/">
               Home
-            </Link>{' '}
+            </Link>
           </Button>
           <Button>
             <Link className={classes.link} to="/browse">
               browse
-            </Link>{' '}
+            </Link>
           </Button>
           <Button>
             <Link className={classes.link} to="/profile">
               profile
-            </Link>{' '}
+            </Link>
           </Button>
         </Toolbar>
       </AppBar>
