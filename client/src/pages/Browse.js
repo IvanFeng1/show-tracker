@@ -4,7 +4,6 @@ import _ from 'lodash';
 
 // components
 import ShowBlock from '../components/ShowBlock.js';
-import Loading from '../components/Loading.js';
 
 // matieral ui stuff
 import Grid from '@material-ui/core/Grid';
@@ -17,6 +16,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -41,7 +41,12 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 20,
   },
   gridContainer: {
+    marginTop: 20,
     flexGrow: 0,
+    marginLeft: 50,
+  },
+  progress: {
+    marginTop: 30,
     marginLeft: 50,
   },
 }));
@@ -141,7 +146,6 @@ const Browse = () => {
             className={classes.filters}
           >
             <Grid item>
-              <Typography>Search</Typography>
               <TextField
                 id="standard-search"
                 label="Search field"
@@ -152,6 +156,7 @@ const Browse = () => {
                     set_title(e.target.value);
                   }
                 }}
+                className={classes.formControl}
               />
             </Grid>
             <Grid item>
@@ -262,7 +267,9 @@ const Browse = () => {
                 </Grid>
               ))
             ) : (
-              <Loading />
+              <Grid>
+                <CircularProgress className={classes.progress} />
+              </Grid>
             )}
           </Grid>
         </Grid>
