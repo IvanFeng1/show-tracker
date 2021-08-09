@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-import Loading from '../components/Loading';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import ShowBlock from '../components/ShowBlock';
 
 import { makeStyles } from '@material-ui/styles';
@@ -51,13 +51,16 @@ function useLocalStorage(key, initialValue) {
 
 const useStyles = makeStyles((theme) => ({
   gridContainer: {
+    marginTop: 40,
     flexGrow: 0,
     marginLeft: 50,
   },
+  block: {
+    marginTop: 20,
+  },
 
-  main: {
-    marginTop: theme.spacing(8),
-    marginBottom: theme.spacing(2),
+  bgcolor: {
+    backgroundColor: 'blue',
   },
 }));
 const Profile = () => {
@@ -189,41 +192,52 @@ const Profile = () => {
   // localStorage is used to keep data after refreshing page, can't use localStorage in render function must use state variable
   if (!isAuthenticated) {
     return (
-      <Container component="main" className={classes.main} maxWidth="sm">
+      <Container component="main" maxWidth="sm">
         <Typography variant="h2" component="h1" gutterBottom>
           Please log in in the homepage
         </Typography>
       </Container>
     );
+  } else if (promiseInProgress) {
+    return (
+      <Grid>
+        <CircularProgress />
+      </Grid>
+    );
   } else {
     return (
-      <div>
-        <Grid
-          container
-          spacing={1}
-          direction="row"
-          classes={classes.gridContainer}
-        >
-          {showData && !_.isEmpty(showData) && _.keys(showData).length > 0 ? (
-            _.map(_.toArray(showData), (anime) => (
-              <Grid key={anime.id} item xs={3}>
-                <ShowBlock
-                  data={anime}
-                  mode="remove"
-                  hasRemoved={hasRemoved}
-                  setHasRemoved={setHasRemoved}
-                />
-              </Grid>
-            ))
-          ) : (
-            <Container component="main" className={classes.main} maxWidth="sm">
-              <Typography variant="h2" component="h1" gutterBottom>
-                Nothing in library. Go to Browse page to add.
-              </Typography>
-            </Container>
-          )}
-        </Grid>
-        {console.log(promiseInProgress)}
+      <div style={{ backgroundColor: '#ffffe4' }}>
+        <Container>
+          <Grid>
+            <Grid
+              container
+              spacing={1}
+              direction="row"
+              className={classes.gridContainer}
+            >
+              {showData &&
+              !_.isEmpty(showData) &&
+              _.keys(showData).length > 0 ? (
+                _.map(_.toArray(showData), (anime) => (
+                  <Grid key={anime.id} item xs={3}>
+                    <ShowBlock
+                      data={anime}
+                      mode="remove"
+                      hasRemoved={hasRemoved}
+                      setHasRemoved={setHasRemoved}
+                    />
+                  </Grid>
+                ))
+              ) : (
+                <Container component="main" maxWidth="sm">
+                  <Typography variant="h2" component="h1">
+                    Nothing in library. Go to Browse page to add.
+                  </Typography>
+                </Container>
+              )}
+            </Grid>
+          </Grid>
+        </Container>
       </div>
     );
   }
