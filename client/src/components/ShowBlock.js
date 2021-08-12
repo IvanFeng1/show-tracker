@@ -19,7 +19,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 function handleSubmitAdd(e, userData, showID) {
   e.preventDefault();
   axios
-    .post('http://localhost:5000/api/post/add', {
+    .post('/api/post/add', {
       user: userData,
       showID: showID,
     })
@@ -32,7 +32,7 @@ function handleSubmitAdd(e, userData, showID) {
 function handleSubmitRemove(e, userData, showID, hasRemoved, setHasRemoved) {
   e.preventDefault();
   axios
-    .post('http://localhost:5000/api/post/remove', {
+    .post('/api/post/remove', {
       user: userData,
       showID: showID,
     })
