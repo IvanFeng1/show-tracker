@@ -184,7 +184,7 @@ const Profile = () => {
           );
         } else {
           // the show_ids is length zero
-          setShowData({});
+          setShowData(new Object());
         }
       }
     })();
