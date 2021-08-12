@@ -92,7 +92,7 @@ app.post('/api/post/remove', async (req, resp) => {
   resp.send('remove request received from node');
 });
 // getting list of ids from db
-app.get('/api/get', (req, resp) => {
+app.get('/api/get', async (req, resp) => {
   let user_email = req.query.user_email;
   let get_query = {
     text: 'select show_id from user_data_table where user_email = $1',
