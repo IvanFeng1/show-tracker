@@ -3,7 +3,7 @@ const logger = require('morgan');
 const app = express();
 const cors = require('cors');
 
-const port = 5000;
+const port = process.env.PORT || 5000;
 require('dotenv').config();
 app.listen(port, () => console.log(` Server started at port ${port}`));
 
@@ -22,12 +22,21 @@ app.use(express.urlencoded({ extended: true }));
 const path = require('path');
 
 const { Pool } = require('pg');
-const pool = new Pool({
-  user: 'postgres',
-  host: 'localhost',
-  database: 'postgres',
+
+const dev_config = {
+  user: process.env.PG_USER,
+  host: process.env.PG_HOST,
+  database: process.env.PG_DB,
   password: process.env.PASSWORD,
-  port: 5432,
+  port: process.env.PG_PORT,
+};
+
+const dev_config2 = `postgresql://${process.env.PG_USER}:${process.env.PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DB}`;
+
+const pro_config = process.env.DATABASE_URL; //heroku stuff
+const pool = new Pool({
+  connectionString:
+    process.env.NODE_ENV === 'production' ? pro_config : dev_config2,
 });
 
 pool.on('error', (err, client) => {
@@ -103,3 +112,8 @@ app.get('/api/get', (req, resp) => {
     }
   });
 });
+
+// code for heroku
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+}
