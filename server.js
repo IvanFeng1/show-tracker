@@ -33,7 +33,7 @@ const dev_config = {
 
 const dev_config2 = `postgresql://${process.env.PG_USER}:${process.env.PASSWORD}@${process.env.PG_HOST}:${process.env.PG_PORT}/${process.env.PG_DB}`;
 
-const pro_config = process.env.DATABASE_URL; //heroku stuff
+const pro_config = process.env.HEROKU_POSTGRESQL_BLACK_URL; //heroku stuff
 const pool = new Pool({
   connectionString:
     process.env.NODE_ENV === 'production' ? pro_config : dev_config2,

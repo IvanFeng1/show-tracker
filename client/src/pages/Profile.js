@@ -206,7 +206,7 @@ const Profile = () => {
     );
   } else {
     {
-      console.log(showData);
+      console.log(typeof showData);
     }
     return (
       <div style={{ backgroundColor: '#ffffe4' }}>
