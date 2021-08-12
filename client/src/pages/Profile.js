@@ -211,7 +211,7 @@ const Profile = () => {
     );
   } else {
     {
-      console.log(typeof showData);
+      console.log(typeof showData === 'object');
     }
     return (
       <div style={{ backgroundColor: '#ffffe4' }}>
@@ -223,7 +223,8 @@ const Profile = () => {
               direction="row"
               className={classes.gridContainer}
             >
-              {showData &&
+              {typeof showData === 'object' &&
+              showData &&
               !_.isEmpty(showData) &&
               _.keys(showData).length > 0 ? (
                 _.map(_.toArray(showData), (anime) => (
