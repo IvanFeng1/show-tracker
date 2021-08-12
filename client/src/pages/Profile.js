@@ -81,7 +81,7 @@ const Profile = () => {
     (async () => {
       let abortController = new AbortController(); // need the aborcontrollers b/c i have two api requests in the useeffect
       if (user) {
-        let z = await axios.get('http://localhost:5000/api/get', {
+        let z = await axios.get('/api/get', {
           params: { user_email: user.email },
         });
         let current_user_shows = z.data;
@@ -137,7 +137,7 @@ const Profile = () => {
   useEffect(() => {
     (async () => {
       if (user) {
-        let z = await axios.get('http://localhost:5000/api/get', {
+        let z = await axios.get('/api/get', {
           params: { user_email: user.email },
         });
         let current_user_shows = z.data;
