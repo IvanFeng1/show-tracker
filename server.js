@@ -44,7 +44,7 @@ pool.on('error', (err, client) => {
 });
 
 // receiving user data and the showid user chose from browse page and then adding it into the db
-app.post('/api/post/add', (req, resp) => {
+app.post('/api/post/add', async (req, resp) => {
   let req_body = req.body;
   let user_email = req_body.user.name;
   let show_id = req_body.showID;
@@ -56,7 +56,7 @@ app.post('/api/post/add', (req, resp) => {
     values: [user_email, show_id],
   };
 
-  pool.query(if_exists_query, (err, res) => {
+  await pool.query(if_exists_query, (err, res) => {
     if (res && res.rows) {
       duplicate_entry = true ? res.rows[0].exists : false;
     }
@@ -66,7 +66,7 @@ app.post('/api/post/add', (req, resp) => {
       text: `insert into user_data_table (user_email, show_id) values ($1,$2)`,
       values: [user_email, show_id],
     };
-    pool.query(insert_query, (err, res) => {
+    await pool.query(insert_query, (err, res) => {
       if (err) {
         console.log(err.stack);
       }
@@ -75,7 +75,7 @@ app.post('/api/post/add', (req, resp) => {
   resp.send('insert request received from node');
 });
 
-app.post('/api/post/remove', (req, resp) => {
+app.post('/api/post/remove', async (req, resp) => {
   let req_body = req.body;
   let user_email = req_body.user.name;
   let show_id = req_body.showID;
@@ -84,7 +84,7 @@ app.post('/api/post/remove', (req, resp) => {
     text: `delete from user_data_table where user_email = $1 and show_id = $2`,
     values: [user_email, show_id],
   };
-  pool.query(remove_query, (err, res) => {
+  await pool.query(remove_query, (err, res) => {
     if (err) {
       console.log(err.stack);
     }
@@ -98,7 +98,7 @@ app.get('/api/get', (req, resp) => {
     text: 'select show_id from user_data_table where user_email = $1',
     values: [user_email],
   };
-  pool.query(get_query, (err, res) => {
+  await pool.query(get_query, (err, res) => {
     if (err) {
       console.log(err.stack);
     }
