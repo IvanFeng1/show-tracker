@@ -205,6 +205,9 @@ const Profile = () => {
       </Grid>
     );
   } else {
+    {
+      console.log(showData);
+    }
     return (
       <div style={{ backgroundColor: '#ffffe4' }}>
         <Container>
