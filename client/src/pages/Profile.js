@@ -141,6 +141,8 @@ const Profile = () => {
           params: { user_email: user.email },
         });
         let current_user_shows = z.data;
+        console.log('current_user_shows');
+        console.log(current_user_shows);
         localStorage.setItem('data', JSON.stringify({}));
         // tried for loop to use the `uselazyquery` hook to fetch every media (objects turns null after coming bakc for some reason and there's no many requests for this method anyways)
         // tried declaring new query inside useeffect (here) but can't declare a new hook inside useeffect because useEffect is a hook i think
@@ -179,11 +181,14 @@ const Profile = () => {
           };
           trackPromise(
             axios(options).then((response) => {
+              console.log('response.data.data');
+              console.log(response.data.data);
               setShowData(response.data.data);
             })
           );
         } else {
           // the show_ids is length zero
+          console.log('reading else after graphql');
           setShowData(new Object());
         }
       }
